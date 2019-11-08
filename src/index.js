@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Accordian(props) {
+function Accordian({term, operationName,onSave,onCancel, ...props}) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -58,30 +58,24 @@ function Accordian(props) {
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
-          id="panel1bh-header"
         >
-          <Typography className={classes.heading}>Operation name</Typography>
+          <Typography className={classes.heading}>{operationName}</Typography>
           <Typography className={classes.secondaryHeading}>
-            The operation name for singing in the mobile app
+            {term}
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div className={classes.container}>
-            {props.children && props.children}
-            <TextField
-              id="outlined-helperText"
-              label="Operation name"
-              defaultValue="Operation"
-              className={classes.operationActions}
-              margin="normal"
-              variant="outlined"
-            />
+            <div className={classes.operationActions}>
+              {props.children && props.children}
+            </div>
+            
           </div>
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button size="small" onClick={onCancel}>Cancel</Button>
+          <Button size="small" color="primary" onClick={onSave} >
             Save
           </Button>
         </ExpansionPanelActions>
@@ -90,5 +84,25 @@ function Accordian(props) {
   );
 }
 
+const children = (<TextField
+          id="outlined-helperText"
+          label="Operation name"
+          defaultValue="Operation"
+          margin="normal"
+          variant="outlined"
+          />);
+
+function App(){
+  return (
+    <Accordian
+    term="The operation name for singing in the mobile app"
+    operationName="Operation Name"
+    children={children}
+    onCancel={null}
+    onSave={null}
+    >{children}</Accordian>
+  )
+}
+
 const rootElement = document.getElementById("root");
-ReactDOM.render(<Accordian />, rootElement);
+ReactDOM.render(<App />, rootElement);
